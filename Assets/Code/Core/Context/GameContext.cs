@@ -10,22 +10,19 @@ public class GameContext : ICoreSystem
 
     private static readonly Dictionary<Type, BaseMonoController> _controllers = new Dictionary<Type, BaseMonoController>();
 
-    private bool _isInit;
-
     public void Init()
     {
-        _isInit = true;
+        
     }
 
     public void DeInit()
     {
-        _isInit = false;
+        
     }
 
     public void Execute()
     {
-        if(!_isInit)
-            return;
+        
     }
 
     public void SpawnPlayer()
@@ -36,7 +33,7 @@ public class GameContext : ICoreSystem
         if(PlayerCamera != null)
             GameObject.Destroy(PlayerCamera.gameObject);
         
-        PlayerCamera = ContextUtils.SpawnManager<PlayerCamera>(_controllers, Configs.Get<GameConfig>().PlayerCamera);
+        PlayerCamera = ContextUtils.SpawnManager<PlayerCamera>(_controllers, Configs.Get<GameConfig>().playerCamera);
         PlayerGame = ContextUtils.SpawnManager<PlayerGame>(_controllers, Configs.Get<GameConfig>().PlayerGameController);
     }
 }

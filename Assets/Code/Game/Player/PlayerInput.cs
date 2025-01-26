@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class PlayerInput
 {
-    public Transform Pivot => _pivot;
-    public Transform Point => _point;
-
+    public Action<Vector3> OnUpdate;
+    public Action<Vector3> OnClick;
+    
     private Transform _pivot;
     private Transform _point;
     private Transform _forward;
@@ -18,28 +18,28 @@ public class PlayerInput
     private Vector3 _forwardAxis = Vector3.zero;
     private float _scrollValue = 0f;
 
+    private Ray _ray;
+    private RaycastHit _hit;
+    private LayerMask _layerHit;
+    
     private InputSettings.InputData _settings;
     private PlayerCamera _camera;
     
-    public PlayerInput(InputSettings.InputData settings, PlayerCamera camera, Transform root)
+    public PlayerInput(InputSettings.InputData settings, PlayerCamera camera, LayerMask layerHit, Transform pivot, Transform point, Transform forward)
     {
         _settings = settings;
         _camera = camera;
-
-        _pivot = new GameObject("Pivot").transform;
-        _pivot.SetParent(root);
-        
-        _point = new GameObject("Point").transform;
-        _point.SetParent(_pivot);
-        
-        _forward = new GameObject("Forward").transform;
-        _forward.SetParent(root);
+        _layerHit = layerHit;
+        _pivot = pivot;
+        _point = point;
+        _forward = forward;
     }
 
     public void Execute()
     {
         DoMove();
         DoRotate();
+        DoRay();
     }
 
     private void DoMove()
@@ -77,6 +77,17 @@ public class PlayerInput
         _scrollValue += Input.mouseScrollDelta.y * _settings.SpeedScroll * Time.deltaTime;
         _scrollValue = Mathf.Clamp(_scrollValue, _settings.ScrollMinDistance, _settings.ScrollMaxDistance);
         _camera.SetHeight(-_scrollValue);
+    }
+
+    private void DoRay()
+    {
+        _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(_ray, out _hit, Mathf.Infinity, _layerHit);
+            
+        if (Input.GetMouseButtonDown(0))
+            OnClick?.Invoke(_hit.point);
+        else
+            OnUpdate?.Invoke(_hit.point);
     }
 
     private void SetCurcor(CursorMode mode)

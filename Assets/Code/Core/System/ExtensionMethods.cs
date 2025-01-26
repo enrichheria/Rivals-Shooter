@@ -7,15 +7,6 @@ using UnityEngine.AI;
 public static class ExtensionMethods
 {
 
-    #region Color
-
-    public static Color WithAlpha(this Color c, float alpha)
-    {
-        return new Color(c.r, c.g, c.b, alpha);
-    }
-
-    #endregion
-    
     #region VECTORS
 
     public static Vector3 WithX(this Vector3 v, float x = 0f)
@@ -38,9 +29,9 @@ public static class ExtensionMethods
         return new Vector3(v.x, v.y, z);
     }
 
-    public static Vector3 ToCell(this Vector3 v)
+    public static Vector3 NormalizeD(this Vector3 v)
     {
-        return new Vector3((int)v.x, (int)v.y, (int)v.z); 
+        return new Vector3((int)v.x, (int)v.y, (int)v.x); 
     }
     
     #endregion
