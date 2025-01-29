@@ -6,7 +6,7 @@ public class GameContext : ICoreSystem
 {
     public PlayerCamera PlayerCamera { get; private set; }
     
-    public PlayerGame PlayerGame { get; private set; }
+    public PlayerController PlayerGame { get; private set; }
 
     private static readonly Dictionary<Type, BaseMonoController> _controllers = new Dictionary<Type, BaseMonoController>();
 
@@ -34,6 +34,6 @@ public class GameContext : ICoreSystem
             GameObject.Destroy(PlayerCamera.gameObject);
         
         PlayerCamera = ContextUtils.SpawnManager<PlayerCamera>(_controllers, Configs.Get<GameConfig>().playerCamera);
-        PlayerGame = ContextUtils.SpawnManager<PlayerGame>(_controllers, Configs.Get<GameConfig>().PlayerGameController);
+        PlayerGame = ContextUtils.SpawnManager<PlayerController>(_controllers, Configs.Get<GameConfig>().PlayerGameController);
     }
 }

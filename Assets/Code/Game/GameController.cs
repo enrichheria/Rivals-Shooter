@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour
     {
         Services.Game.Load();
         Services.UI.Get<GameUI>().Show();
+        Services.Game.Context.SpawnPlayer();
     }
     
     private void OnDestroy()
